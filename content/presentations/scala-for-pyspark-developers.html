@@ -1,0 +1,392 @@
+---
+title: "Scala for (Py)Spark Developers"
+author: "Joël Vimenet"
+date: 2020-10-08T15:36:24+02:00
+image: Scala_logo.png
+summary: Minimal Scala course to allow Python developers read and write Spark Scala code
+draft: true
+---
+<!DOCTYPE html>
+<html>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">Scala for (py)spark developers</h1>
+  <p class="author">Joël Vimenet</p>
+  <p class="date">2020/09/28</p>
+</section>
+
+<section>
+<section id="introduction" class="title-slide slide level1">
+<h1>Introduction</h1>
+
+</section>
+<section id="it-is-not" class="title-slide slide level2">
+<h2>It is not</h2>
+<ul>
+<li>Language comparison</li>
+<li>Functional programming course</li>
+<li>Spark course</li>
+</ul>
+</section>
+
+<section id="objectives-of-the-presentation" class="title-slide slide level2">
+<h2>Objectives of the presentation</h2>
+<ul>
+<li>Beeing able to read Spark Scala code</li>
+<li>Beeing able to write Basic Spark scala code</li>
+</ul>
+</section>
+</section>
+<section>
+<section id="language" class="title-slide slide level1">
+<h1>Language</h1>
+
+</section>
+<section id="compiled-jvm-language" class="title-slide slide level2">
+<h2>Compiled JVM language</h2>
+<ul>
+<li>Can run anywhere a JVM is installed</li>
+<li>No need to recompile to run on Windows, Mac, Linux, etc…</li>
+<li>Interoperable with Java
+<ul>
+<li>Use any Java lib in Scala</li>
+<li>Call Scala code from Java (not great idea)</li>
+</ul></li>
+</ul>
+</section>
+
+<section id="statically-typed" class="title-slide slide level2">
+<h2>Statically typed</h2>
+<ul>
+<li>Values (contants and variables) have a type that cannot change</li>
+<li>Type inference</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">val</span> myValue : Int = <span class="dv">1</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">val</span> myInferedValue = <span class="st">&quot;is a string&quot;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">var</span> mutableValue = <span class="dv">42</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>mutableValue = <span class="st">&quot;cannot become a string&quot;</span> <span class="co">// won&#39;t compile</span></span></code></pre></div>
+</section>
+
+<section id="strongly-typed" class="title-slide slide level2">
+<h2>Strongly typed</h2>
+
+</section>
+<section id="everything-has-a-type" class="slide level3">
+<h3>Everything has a type</h3>
+<p>Values, functions and control structures have a type</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">val</span> myValue = <span class="kw">true</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="kw">def</span> <span class="fu">myFunction</span>(param: Boolean) : Int =</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>    <span class="kw">if</span> (param) <span class="dv">1</span> <span class="kw">else</span> <span class="dv">-1</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a><span class="kw">val</span> mySeq = Seq(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a><span class="kw">val</span> newSeq : Seq[Int] =</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a>    <span class="kw">for</span> (value &lt;- myList)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a>    <span class="kw">yield</span> value * <span class="dv">2</span></span></code></pre></div>
+</section>
+<section id="describe-everything-by-a-type" class="slide level3">
+<h3>Describe everything by a type</h3>
+<ul>
+<li>A value is not mandatory : <code>Option</code></li>
+<li>An error can happen : <code>Try</code></li>
+<li>A result can have one type or another one : <code>Either</code></li>
+</ul>
+</section>
+<section id="compiler-is-your-friend" class="slide level3">
+<h3>Compiler is your friend</h3>
+<ul>
+<li>Static and string typing catches a lot of errors
+<ul>
+<li>Never return <code>null</code>, use <code>Option</code> instead: No null exception</li>
+<li>Don’t throw exceptions, return <code>Try</code> instead : No unhandled exceptions</li>
+</ul></li>
+</ul>
+</section>
+
+<section id="object-oriented" class="title-slide slide level2">
+<h2>Object oriented</h2>
+
+</section>
+<section id="traits-and-classes" class="slide level3">
+<h3>Traits and classes</h3>
+<ul>
+<li>Inheritence is supported
+<ul>
+<li>mostly used between traits and classes</li>
+<li>Deep inheritence is a bad practice</li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level3">
+
+<div class="sourceCode" id="cb3"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">trait</span> Person {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>    <span class="kw">def</span> <span class="fu">sayHello</span>(): String</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>}</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a><span class="kw">class</span> <span class="fu">Adult</span>(name: String, age: Int) <span class="kw">extends</span> Person {</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a>    <span class="kw">def</span> <span class="fu">sayHello</span>(): String =</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a>        s<span class="st">&quot;Hello, my name is $name, I am $age years old&quot;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a>}</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a><span class="kw">class</span> <span class="fu">Child</span>(name: String) <span class="kw">extends</span> Person {</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a>    <span class="kw">def</span> <span class="fu">sayHello</span>(): String =</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a>        s<span class="st">&quot;Hello, my name is $name&quot;</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a>}</span></code></pre></div>
+</section>
+<section class="slide level3">
+
+<div class="sourceCode" id="cb4"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="kw">val</span> jojo = <span class="kw">new</span> <span class="fu">Adult</span>(<span class="st">&quot;Joël&quot;</span>, <span class="dv">36</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="kw">val</span> baby = <span class="kw">new</span> <span class="fu">Child</span>(<span class="st">&quot;Baby&quot;</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a><span class="fu">println</span>(jojo.<span class="fu">sayHello</span>())</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a><span class="co">// Hello, my name is Joël, I am 36 years old&quot;</span></span></code></pre></div>
+</section>
+<section id="case-classes" class="slide level3">
+<h3>case classes</h3>
+<p>Scala has a special type of class called <code>case class</code>. It is designed to be a simple data container that has the following characteristics :</p>
+<ul>
+<li>immutable by default</li>
+<li>public fields</li>
+<li>automatic getter, equals, hashCode and copy generation</li>
+<li>automatic pattern matching support</li>
+</ul>
+</section>
+<section id="objects" class="slide level3">
+<h3>objects</h3>
+<p>object is a static holder containing constants</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="kw">object</span> MyFunctions {</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>    <span class="kw">val</span> myConstant = <span class="dv">42</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>    <span class="kw">def</span> <span class="fu">multiply</span>(value: Int) = myConstant * value</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>}</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a><span class="kw">val</span> myResult = myFunctions.<span class="fu">multiply</span>(<span class="dv">2</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a><span class="co">// 84, what a beautiful year!</span></span></code></pre></div>
+</section>
+<section id="generics" class="slide level3">
+<h3>Generics</h3>
+<p>Types that can be parameterized by other types. For instance, a <code>Seq</code> or an <code>Option</code> can contain objects of any type. Type only has to be implemented once and remains typesafe.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="kw">val</span> intSeq : Seq[Int] = Seq(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="kw">val</span> stringSeq : Seq[String] = Seq(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a><span class="kw">val</span> maybeIntHead : Option[Int] =</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>    intSeq.<span class="fu">headOption</span> <span class="co">// Some(1)</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a><span class="kw">val</span> maybeStringHead : Option[String] =</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>    stringSeq.<span class="fu">headOption</span> <span class="co">// Some(&quot;A&quot;)</span></span></code></pre></div>
+</section>
+
+<section id="functional" class="title-slide slide level2">
+<h2>Functional</h2>
+
+</section>
+<section id="functionnal-programming" class="slide level3">
+<h3>Functionnal programming</h3>
+<p>Functional programming is about describing data and the transformations applied to it.</p>
+</section>
+<section id="functions" class="slide level3">
+<h3>Functions</h3>
+<p>Functions are first class citizen of the language</p>
+<ul>
+<li>Have a type</li>
+<li>Can be assigned to a value</li>
+<li>Can be passed as parameter</li>
+<li>Pure functions
+<ul>
+<li>Result depends only on the parameters</li>
+<li>No side effects</li>
+<li>Easy to test</li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level3">
+
+<div class="sourceCode" id="cb7"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="kw">val</span> add : (Int, Int) =&gt; Int =</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>    (x, y) =&gt; x + y</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a><span class="kw">val</span> result = <span class="fu">add</span>(<span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a><span class="kw">val</span> myList = Seq(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a><span class="kw">val</span> reducedList = myList.<span class="fu">reduce</span>(add)</span></code></pre></div>
+</section>
+<section id="pattern-matching" class="slide level3">
+<h3>Pattern matching</h3>
+<ul>
+<li>Switch on steroids</li>
+<li>Typesafe</li>
+<li>Extract parts of the content to work on it</li>
+<li>Combined with strong typing, compiler can check match exhaustivity</li>
+</ul>
+</section>
+<section class="slide level3">
+
+<div class="sourceCode" id="cb8"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a><span class="kw">val</span> maybeValue = <span class="fu">functionThatReturnsAnOption</span>(param1, param2)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>maybeValue <span class="kw">match</span> {</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>    <span class="kw">case</span> Some(result) =&gt; <span class="fu">valueHandler</span>(result)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a>    <span class="kw">case</span> None         =&gt; <span class="fu">noValueHandler</span>()</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a>}</span></code></pre></div>
+</section>
+<section id="variables-deconstruction" class="slide level3">
+<h3>Variables deconstruction</h3>
+<p>In the same idea than pattern matching, you can deconstruct variables. It works with everything working with pattern matching:</p>
+<ul>
+<li>case classes</li>
+<li>lists</li>
+<li>tuples</li>
+<li>etc…</li>
+</ul>
+</section>
+<section class="slide level3">
+
+<div class="sourceCode" id="cb9"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="kw">case</span> <span class="kw">class</span> <span class="fu">Person</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>  firstName: String,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a>  lastName: String,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a>  age: Int)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a><span class="kw">val</span> me = <span class="fu">Person</span>(<span class="st">&quot;Joël&quot;</span>, <span class="st">&quot;Vimenet&quot;</span>, <span class="dv">36</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a><span class="kw">val</span> <span class="fu">Person</span>(myFirstName, myLastName, myAge) = me</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true"></a><span class="fu">println</span>(s<span class="st">&quot;$myFirstName $myLastName is $myAge years old&quot;</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true"></a><span class="co">// Joël Vimenet is 36 years old</span></span></code></pre></div>
+</section>
+<section id="immutability" class="slide level3">
+<h3>Immutability</h3>
+<p>By default everything is immutable</p>
+<ul>
+<li>val is prefered, var is discouraged</li>
+<li>case classes are immutable
+<ul>
+<li>copy method eases transforming case class</li>
+</ul></li>
+<li>collections are immutable</li>
+</ul>
+</section>
+<section id="implicits" class="slide level3">
+<h3>Implicits</h3>
+<ul>
+<li>Pass parameters implicitly
+<ul>
+<li>Implicit value declared in the context is bound to the function by the compiler</li>
+<li>It allows to reduce the number of parameters passed</li>
+<li>for instance, when writing async code, the execution context</li>
+</ul></li>
+<li>Beware it can reduce understanding of the code
+<ul>
+<li>Where does this parameter comes from?</li>
+<li>help from IDE</li>
+</ul></li>
+</ul>
+</section>
+
+<section id="official-documentation" class="title-slide slide level2">
+<h2>Official documentation</h2>
+<p>The <a href="https://docs.scala-lang.org/">official documentation</a> contains detailed examples of what I described previously and much more.</p>
+</section>
+
+<section id="language-specification" class="title-slide slide level2">
+<h2>Language specification</h2>
+<p>It is relatively short and can be read in a short time.</p>
+<p><a href="https://scala-lang.org/files/archive/spec/2.13/">2.13 Specification</a></p>
+</section>
+</section>
+<section>
+<section id="tooling" class="title-slide slide level1">
+<h1>Tooling</h1>
+
+</section>
+<section id="sbt" class="title-slide slide level2">
+<h2>SBT</h2>
+<ul>
+<li>Simple Build Tool (sic)</li>
+<li>build.sbt project description file
+<ul>
+<li>describe dependencies</li>
+<li>compile options</li>
+<li>plugins
+<ul>
+<li>sbt-release</li>
+<li>formatter, linter, etc…</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+
+<section id="ide" class="title-slide slide level2">
+<h2>IDE</h2>
+<ul>
+<li>IntelliJ IDEA community edition</li>
+<li>VSCode + Metals</li>
+<li>Vim, Emacs, etc…</li>
+</ul>
+</section>
+</section>
+<section>
+<section id="spark" class="title-slide slide level1">
+<h1>Spark</h1>
+
+</section>
+<section id="native-api" class="title-slide slide level2">
+<h2>Native API</h2>
+<p>Spark is developped in Scala, so Scala API is native</p>
+</section>
+
+<section id="typesafe-api" class="title-slide slide level2">
+<h2>Typesafe API</h2>
+<p>Spark Scala provides the Dataset API</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="kw">type</span> DataFrame = Dataset[Row]</span></code></pre></div>
+</section>
+
+<section id="dataset-programming" class="title-slide slide level2">
+<h2>Dataset programming</h2>
+<ul>
+<li>Describe your data structures as case classes,</li>
+<li>Define your transformation functions based on your types (Spark independent),</li>
+<li>Problems are catched at compile time and not at runtime.</li>
+</ul>
+<p><strong>Your code is safer, easier to reason about.</strong></p>
+</section>
+</section>
+<section id="demo-time" class="title-slide slide level1">
+<h1>Demo time</h1>
+
+</section>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/reveal.js@^4//dist/reveal.js"></script>
+
+  // reveal.js plugins
+  <script src="https://unpkg.com/reveal.js@^4//plugin/notes/notes.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4//plugin/search/search.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4//plugin/zoom/zoom.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+        // Push each slide change to the browser history
+        history: true,
+        // Transition style
+        transition: 'linear', // none/fade/slide/convex/concave/zoom
+
+        // reveal.js plugins
+        plugins: [
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    </body>
+</html>

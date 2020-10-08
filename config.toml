@@ -1,0 +1,14 @@
+baseURL = "https://slides.joelvim.net"
+languageCode = "en-us"
+title = "Slides"
+theme = "newsroom"
+disableKinds = ["taxonomy", "taxonomyTerm", "RSS"]
+
+[params]
+  author = "Joël Vimenet"
+  description = "Slides"
+  message = ""
+  hideAutoMenu = false
+
+[permalinks]
+presentations = "/:title"
