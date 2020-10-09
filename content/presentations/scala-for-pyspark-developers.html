@@ -287,6 +287,19 @@ draft: false
 </ul></li>
 </ul>
 </section>
+<section id="implicit-conversions" class="slide level3">
+<h3>Implicit conversions</h3>
+<p>Implicit conversions are used to create extension methods (adding new methods on an existing type).</p>
+<p>You can declare a function or class as implicit if it takes only one parameter.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a><span class="kw">case</span> <span class="kw">class</span> <span class="fu">Euro</span>(value: Double)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a><span class="kw">implicit</span> <span class="kw">class</span> <span class="fu">DoubleToEuro</span>(value: Double) {</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a>    <span class="kw">def</span> euros = <span class="fu">Euro</span>(value)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a>}</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true"></a><span class="kw">val</span> twoEuros = <span class="dv">2</span> euros</span></code></pre></div>
+</section>
 
 <section id="official-documentation" class="title-slide slide level2">
 <h2>Official documentation</h2>
@@ -343,7 +356,7 @@ draft: false
 <section id="typesafe-api" class="title-slide slide level2">
 <h2>Typesafe API</h2>
 <p>Spark Scala provides the Dataset API</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="kw">type</span> DataFrame = Dataset[Row]</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="kw">type</span> DataFrame = Dataset[Row]</span></code></pre></div>
 </section>
 
 <section id="dataset-programming" class="title-slide slide level2">
