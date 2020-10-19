@@ -85,7 +85,7 @@ draft: false
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a><span class="kw">val</span> mySeq = Seq(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a><span class="kw">val</span> newSeq : Seq[Int] =</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a>    <span class="kw">for</span> (value &lt;- myList)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a>    <span class="kw">for</span> (value &lt;- mySeq)</span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a>    <span class="kw">yield</span> value * <span class="dv">2</span></span></code></pre></div>
 </section>
 <section id="describe-everything-by-a-type" class="slide level3">
@@ -99,7 +99,7 @@ draft: false
 <section id="compiler-is-your-friend" class="slide level3">
 <h3>Compiler is your friend</h3>
 <ul>
-<li>Static and string typing catches a lot of errors
+<li>Static and strong typing catches a lot of errors
 <ul>
 <li>Never return <code>null</code>, use <code>Option</code> instead: No null exception</li>
 <li>Don’t throw exceptions, return <code>Try</code> instead : No unhandled exceptions</li>
