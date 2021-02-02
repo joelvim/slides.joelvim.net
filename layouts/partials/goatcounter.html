@@ -1,0 +1,6 @@
+{{- if isset .Site.Params.analytics "goatcounter" }}
+<!-- Goatcounter - https://github.com/zgoat/goatcounter -->
+<script data-goatcounter="{{ printf "%s/count" .Site.Params.analytics.goatcounter.baseUrl}}"
+        async src="{{ printf "%s/count.js" .Site.Params.analytics.goatcounter.baseUrl}}"></script>
+<!-- / Goatcounter -->
+{{- end }}

@@ -9,6 +9,9 @@ disableKinds = ["taxonomy", "taxonomyTerm", "RSS"]
   description = "Slides"
   message = ""
   hideAutoMenu = false
+  [params.analytics.goatcounter]
+    baseUrl = "https://goat.joelvim.net"
+
 
 [permalinks]
 presentations = "/:title"
